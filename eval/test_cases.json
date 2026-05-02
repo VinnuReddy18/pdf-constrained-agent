@@ -1,0 +1,50 @@
+[
+  {
+    "name": "valid_question_1",
+    "query": "What does the PDF define AI Engineering as?",
+    "expected_keywords": ["production applications", "pretrained foundation models", "orchestrate"],
+    "type": "valid"
+  },
+  {
+    "name": "valid_question_2",
+    "query": "What are the core responsibilities of an AI Engineer listed in the document?",
+    "expected_keywords": ["integrate", "prompt", "RAG", "evaluation"],
+    "type": "valid"
+  },
+  {
+    "name": "valid_question_3",
+    "query": "How does the PDF contrast ML Engineering with AI Engineering?",
+    "expected_keywords": ["trains models", "pretrained foundation models", "prompt"],
+    "type": "valid"
+  },
+  {
+    "name": "valid_question_4",
+    "query": "What data flow steps are shown for decoder-only models?",
+    "expected_keywords": ["tokenization", "embedding", "Transformer", "softmax"],
+    "type": "valid"
+  },
+  {
+    "name": "valid_question_5",
+    "query": "What does the document say causal masking prevents?",
+    "expected_keywords": ["future tokens", "attends", "mask"],
+    "type": "valid"
+  },
+  {
+    "name": "invalid_question_1",
+    "query": "Who won the FIFA World Cup in 2018?",
+    "expected": "refusal",
+    "type": "invalid"
+  },
+  {
+    "name": "invalid_question_2",
+    "query": "What is the weather in Delhi today?",
+    "expected": "refusal",
+    "type": "invalid"
+  },
+  {
+    "name": "invalid_question_3",
+    "query": "Write Python code to reverse a linked list.",
+    "expected": "refusal",
+    "type": "invalid"
+  }
+]
