@@ -1,3 +1,4 @@
+```python
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -8,6 +9,7 @@ from pydantic import BaseModel, Field
 
 from .indexer import PdfIndex, embed_texts
 from .types import AgentResult, RetrievedChunk
+from .prompt_handler import PromptHandler  # Corrected import to match project import pattern
 
 
 class GroundedAnswer(BaseModel):
@@ -22,13 +24,15 @@ class AgentConfig:
     answering_model: str = "gpt-4.1-mini"
     top_k: int = 6
     min_similarity: float = 0.2
+    prompt_strictness: int = 2  # New configuration for prompt strictness
 
 
-class PdfGroundedAgent:
+class PdfGroundedAgent:  # Class names should remain PascalCase
     def __init__(self, client: OpenAI, index: PdfIndex, config: AgentConfig) -> None:
         self.client = client
         self.index = index
         self.config = config
+        self.prompt_handler = PromptHandler(strictness_level=config.prompt_strictness)  # Initialize PromptHandler
 
     def _conversation_context(self, history: Optional[List[Dict[str, str]]]) -> str:
         if not history:
@@ -106,7 +110,11 @@ class PdfGroundedAgent:
         )
         conversation = self._conversation_context(history)
         history_block = f"Conversation history:\n{conversation}\n\n" if conversation else ""
-        user = f"{history_block}Question:\n{question}\n\nPDF context:\n{context}"
+        
+        # Update the question prompt using the PromptHandler
+        updated_question = self.prompt_handler.update_prompt(question)
+        
+        user = f"{history_block}Question:\n{updated_question}\n\nPDF context:\n{context}"
         completion = self.client.responses.parse(
             model=self.config.answering_model,
             input=[
@@ -169,3 +177,4 @@ class PdfGroundedAgent:
             refusal=False,
             debug_trace="\n".join(trace_lines),
         )
+```
